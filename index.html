@@ -1,0 +1,1036 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FUSION CAT MEME DESTROYER 3000</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Creepster&family=Bangers&display=swap');
+        
+        body {
+            background: linear-gradient(45deg, #667eea 0%, #764ba2 50%, #ff9a9e 100%);
+            min-height: 100vh;
+            position: relative;
+            overflow-x: hidden;
+        }
+        
+        .floating-cats {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+        
+        .floating-cat {
+            position: absolute;
+            font-size: 30px;
+            animation: float 6s ease-in-out infinite;
+            opacity: 0.15;
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(5deg); }
+        }
+        
+        .meme-container {
+            position: relative;
+            max-width: 800px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(20px);
+            border-radius: 25px;
+            padding: 20px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.4);
+        }
+        
+        .meme-text {
+            position: absolute;
+            width: 100%;
+            text-align: center;
+            color: white;
+            font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+            text-shadow: 3px 3px 0 #000, -3px -3px 0 #000, 3px -3px 0 #000, -3px 3px 0 #000;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            user-select: none;
+            pointer-events: none;
+            z-index: 10;
+            transition: all 0.3s ease;
+        }
+        
+        .top-text {
+            top: 30px;
+        }
+        
+        .bottom-text {
+            bottom: 30px;
+        }
+        
+        #memeCanvas {
+            max-width: 100%;
+            height: auto;
+            border-radius: 15px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
+            transition: all 0.3s ease;
+        }
+        
+        #memeCanvas:hover {
+            transform: scale(1.02);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+        }
+        
+        .cat-option {
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            border-radius: 15px;
+            overflow: hidden;
+            cursor: pointer;
+            background: linear-gradient(45deg, #ff6b6b, #4ecdc4);
+            padding: 3px;
+            position: relative;
+        }
+        
+        .cat-option:hover {
+            transform: translateY(-5px) scale(1.05);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+        }
+        
+        .cat-option.selected {
+            transform: translateY(-8px) scale(1.1);
+            box-shadow: 0 20px 40px rgba(255, 107, 107, 0.4);
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { box-shadow: 0 20px 40px rgba(255, 107, 107, 0.4); }
+            50% { box-shadow: 0 25px 50px rgba(255, 107, 107, 0.6); }
+        }
+        
+        .cat-option img {
+            width: 100%;
+            height: 120px;
+            object-fit: cover;
+            border-radius: 12px;
+        }
+        
+        .control-panel {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 20px;
+            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+        }
+        
+        .neon-button {
+            background: linear-gradient(45deg, #ff006e, #fb5607, #ffbe0b, #8338ec);
+            background-size: 300% 300%;
+            animation: rainbow 3s ease infinite;
+            border: none;
+            border-radius: 15px;
+            color: white;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .neon-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+        }
+        
+        .neon-button:active {
+            transform: translateY(-1px);
+        }
+        
+        @keyframes rainbow {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        
+        .effect-selector {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
+            gap: 8px;
+            margin: 15px 0;
+        }
+        
+        .effect-btn {
+            padding: 8px 4px;
+            border-radius: 10px;
+            border: 2px solid transparent;
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 11px;
+            text-align: center;
+        }
+        
+        .effect-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: scale(1.05);
+        }
+        
+        .effect-btn.active {
+            border-color: #ff006e;
+            background: rgba(255, 0, 110, 0.3);
+        }
+        
+        .meme-template {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            padding: 10px;
+            margin: 5px 0;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+        
+        .meme-template:hover {
+            background: rgba(255, 255, 255, 0.2);
+            border-color: #ff006e;
+            transform: translateX(5px);
+        }
+        
+        .stats-container {
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 15px;
+            padding: 15px;
+            margin-top: 20px;
+            color: white;
+        }
+        
+        .main-content {
+            position: relative;
+            z-index: 2;
+        }
+        
+        .wobble {
+            animation: wobble 0.5s ease-in-out;
+        }
+        
+        @keyframes wobble {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-5px) rotate(-2deg); }
+            75% { transform: translateX(5px) rotate(2deg); }
+        }
+        
+        .bounce-in {
+            animation: bounceIn 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+        }
+        
+        @keyframes bounceIn {
+            0% { transform: scale(0.3); opacity: 0; }
+            50% { transform: scale(1.05); opacity: 0.9; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+        
+        .share-button {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            transition: all 0.3s ease;
+            text-decoration: none;
+        }
+        
+        .share-button:hover {
+            transform: translateY(-3px) scale(1.1);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+        }
+        
+        .idea-item {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            padding: 8px;
+            margin: 3px 0;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 12px;
+        }
+        
+        .idea-item:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateX(5px);
+        }
+        
+        .mode-toggle {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 10px;
+        }
+        
+        .advanced-controls {
+            display: none;
+        }
+        
+        .advanced-mode .advanced-controls {
+            display: block;
+        }
+        
+        .simple-mode .basic-controls {
+            display: block;
+        }
+        
+        .rotation-slider {
+            margin: 10px 0;
+        }
+        
+        .opacity-slider {
+            margin: 10px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="floating-cats" id="floatingCats"></div>
+    
+    <!-- Mode Toggle -->
+    <div class="mode-toggle">
+        <button id="modeToggle" class="neon-button px-4 py-2 text-sm">
+            <i class="fas fa-cog mr-2"></i>ADVANCED MODE
+        </button>
+    </div>
+    
+    <div class="main-content container mx-auto px-4 py-8">
+        <header class="text-center mb-8 bounce-in">
+            <h1 class="text-5xl md:text-6xl font-bold text-white mb-4" style="font-family: 'Bangers', cursive; text-shadow: 4px 4px 0 #000, -4px -4px 0 #000, 4px -4px 0 #000, -4px 4px 0 #000;">
+                🚀 FUSION CAT MEME DESTROYER 3000 🚀
+            </h1>
+            <p class="text-xl text-white mb-4 font-bold">The Ultimate Combination of Pure Meme Power</p>
+            <div class="flex justify-center space-x-4">
+                <span class="text-3xl">😼</span>
+                <span class="text-3xl">⚡</span>
+                <span class="text-3xl">🔥</span>
+                <span class="text-3xl">💥</span>
+                <span class="text-3xl">🎭</span>
+            </div>
+        </header>
+
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            <!-- Main Meme Canvas -->
+            <div class="lg:col-span-2">
+                <div class="meme-container mb-6">
+                    <canvas id="memeCanvas" width="800" height="600" class="bg-gray-200 w-full"></canvas>
+                    <div id="topText" class="meme-text top-text text-5xl">WHEN THE FUSION</div>
+                    <div id="bottomText" class="meme-text bottom-text text-5xl">IS COMPLETE</div>
+                </div>
+
+                <!-- Quick Actions Row -->
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+                    <button id="generateMeme" class="neon-button py-3 px-4 flex items-center justify-center">
+                        <i class="fas fa-magic mr-2"></i>GENERATE
+                    </button>
+                    <button id="randomMeme" class="neon-button py-3 px-4 flex items-center justify-center">
+                        <i class="fas fa-dice mr-2"></i>CHAOS
+                    </button>
+                    <button id="downloadMeme" class="neon-button py-3 px-4 flex items-center justify-center">
+                        <i class="fas fa-download mr-2"></i>DOWNLOAD
+                    </button>
+                    <button id="surpriseMe" class="neon-button py-3 px-4 flex items-center justify-center">
+                        <i class="fas fa-gift mr-2"></i>SURPRISE
+                    </button>
+                </div>
+
+                <!-- Cat Selection Grid -->
+                <div class="control-panel p-6">
+                    <h2 class="text-xl font-bold text-white mb-4">🐱 CHOOSE YOUR WARRIOR</h2>
+                    <div class="grid grid-cols-3 md:grid-cols-6 gap-3 mb-4">
+                        <div class="cat-option" data-img="https://cataas.com/cat/cute">
+                            <img src="https://cataas.com/cat/cute" alt="Cute Cat">
+                            <div class="text-center text-white text-xs mt-1 font-bold">CUTE</div>
+                        </div>
+                        <div class="cat-option" data-img="https://cataas.com/cat/angry">
+                            <img src="https://cataas.com/cat/angry" alt="Angry Cat">
+                            <div class="text-center text-white text-xs mt-1 font-bold">ANGRY</div>
+                        </div>
+                        <div class="cat-option" data-img="https://cataas.com/cat/funny">
+                            <img src="https://cataas.com/cat/funny" alt="Funny Cat">
+                            <div class="text-center text-white text-xs mt-1 font-bold">FUNNY</div>
+                        </div>
+                        <div class="cat-option" data-img="https://cataas.com/cat/sleepy">
+                            <img src="https://cataas.com/cat/sleepy" alt="Sleepy Cat">
+                            <div class="text-center text-white text-xs mt-1 font-bold">SLEEPY</div>
+                        </div>
+                        <div class="cat-option" data-img="https://cataas.com/cat/surprised">
+                            <img src="https://cataas.com/cat/surprised" alt="Surprised Cat">
+                            <div class="text-center text-white text-xs mt-1 font-bold">SHOCKED</div>
+                        </div>
+                        <div class="cat-option" data-img="https://cataas.com/cat">
+                            <img src="https://cataas.com/cat" alt="Random Cat">
+                            <div class="text-center text-white text-xs mt-1 font-bold">RANDOM</div>
+                        </div>
+                    </div>
+                    
+                    <div class="flex space-x-2">
+                        <input type="text" id="customCatUrl" class="flex-1 px-4 py-2 bg-white/20 border border-white/30 rounded-lg text-white placeholder-white/70 focus:outline-none focus:ring-2 focus:ring-pink-500" placeholder="Custom cat URL or upload">
+                        <button id="loadCustomCat" class="neon-button px-4 py-2">LOAD</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Control Panel -->
+            <div class="control-panel p-6">
+                <h2 class="text-2xl font-bold text-white mb-6">🎛️ CONTROL CENTER</h2>
+                
+                <!-- Text Controls -->
+                <div class="space-y-4 mb-6 basic-controls">
+                    <div>
+                        <label class="block text-white font-bold mb-1">TOP TEXT</label>
+                        <input type="text" id="topTextInput" class="w-full px-3 py-2 bg-white/20 border border-white/30 rounded-lg text-white placeholder-white/70 focus:outline-none focus:ring-2 focus:ring-pink-500" placeholder="TOP TEXT">
+                    </div>
+                    <div>
+                        <label class="block text-white font-bold mb-1">BOTTOM TEXT</label>
+                        <input type="text" id="bottomTextInput" class="w-full px-3 py-2 bg-white/20 border border-white/30 rounded-lg text-white placeholder-white/70 focus:outline-none focus:ring-2 focus:ring-pink-500" placeholder="BOTTOM TEXT">
+                    </div>
+                </div>
+
+                <!-- Text Style Controls -->
+                <div class="mb-6">
+                    <label class="block text-white font-bold mb-2">TEXT COLOR</label>
+                    <select id="textColor" class="w-full px-3 py-2 bg-white/20 border border-white/30 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-pink-500">
+                        <option value="white">White</option>
+                        <option value="yellow">Yellow</option>
+                        <option value="red">Red</option>
+                        <option value="blue">Blue</option>
+                        <option value="green">Green</option>
+                        <option value="black">Black</option>
+                        <option value="orange">Orange</option>
+                        <option value="purple">Purple</option>
+                    </select>
+                </div>
+
+                <!-- Font Size -->
+                <div class="mb-6">
+                    <label class="block text-white font-bold mb-2">FONT SIZE: <span id="fontSizeValue">40</span>px</label>
+                    <input type="range" id="fontSize" min="20" max="80" value="40" class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer">
+                </div>
+
+                <!-- Advanced Text Effects -->
+                <div class="mb-6">
+                    <label class="block text-white font-bold mb-2">TEXT EFFECTS</label>
+                    <div class="effect-selector">
+                        <div class="effect-btn active" data-effect="normal">NORMAL</div>
+                        <div class="effect-btn" data-effect="rainbow">🌈</div>
+                        <div class="effect-btn" data-effect="fire">🔥</div>
+                        <div class="effect-btn" data-effect="ice">❄️</div>
+                        <div class="effect-btn" data-effect="neon">⚡</div>
+                        <div class="effect-btn" data-effect="glitch">📺</div>
+                    </div>
+                </div>
+
+                <!-- Advanced Controls -->
+                <div class="advanced-controls space-y-4 mb-6">
+                    <div>
+                        <label class="block text-white font-bold mb-2">FONT STYLE</label>
+                        <select id="fontStyle" class="w-full px-3 py-2 bg-white/20 border border-white/30 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-pink-500">
+                            <option value="Impact">Impact</option>
+                            <option value="Bangers">Bangers</option>
+                            <option value="Creepster">Creepster</option>
+                            <option value="Arial Black">Arial Black</option>
+                        </select>
+                    </div>
+                    
+                    <div class="rotation-slider">
+                        <label class="block text-white font-bold mb-2">TEXT ROTATION: <span id="rotationValue">0</span>°</label>
+                        <input type="range" id="textRotation" min="-15" max="15" value="0" class="w-full">
+                    </div>
+                    
+                    <div class="opacity-slider">
+                        <label class="block text-white font-bold mb-2">TEXT OPACITY: <span id="opacityValue">100</span>%</label>
+                        <input type="range" id="textOpacity" min="50" max="100" value="100" class="w-full">
+                    </div>
+                </div>
+
+                <!-- Legendary Templates -->
+                <div class="mb-6">
+                    <label class="block text-white font-bold mb-2">🏆 LEGENDARY TEMPLATES</label>
+                    <div id="templates">
+                        <div class="meme-template" data-top="I DON'T ALWAYS" data-bottom="BUT WHEN I DO, I PURR">
+                            <div class="text-white text-sm font-bold">Most Interesting Cat</div>
+                        </div>
+                        <div class="meme-template" data-top="ONE DOES NOT SIMPLY" data-bottom="WALK PAST A CAT">
+                            <div class="text-white text-sm font-bold">One Does Not Simply</div>
+                        </div>
+                        <div class="meme-template" data-top="DISTRACTED BOYFRIEND" data-bottom="BUT IT'S A CAT">
+                            <div class="text-white text-sm font-bold">Distracted Human</div>
+                        </div>
+                        <div class="meme-template" data-top="THEY DON'T KNOW" data-bottom="I KNOCKED IT OFF THE TABLE">
+                            <div class="text-white text-sm font-bold">They Don't Know</div>
+                        </div>
+                        <div class="meme-template" data-top="IT'S FREE REAL ESTATE" data-bottom="THIS CARDBOARD BOX">
+                            <div class="text-white text-sm font-bold">Free Real Estate</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Meme Ideas -->
+                <div class="mb-6">
+                    <label class="block text-white font-bold mb-2">💡 MEME IDEAS</label>
+                    <div class="space-y-1">
+                        <div class="idea-item" data-top="WHEN YOU REALIZE" data-bottom="IT'S MONDAY">Monday Cat</div>
+                        <div class="idea-item" data-top="ME WAITING FOR" data-bottom="THE FOOD TO APPEAR">Waiting Cat</div>
+                        <div class="idea-item" data-top="HUMAN: *PETS ME*" data-bottom="ME: I DIDN'T ASK FOR THIS">Reluctant Cat</div>
+                        <div class="idea-item" data-top="NOBODY:" data-bottom="CATS AT 3AM: *ZOOMIES*">3AM Cat</div>
+                        <div class="idea-item" data-top="THE AUDACITY" data-bottom="OF THESE HUMANS">Audacious Cat</div>
+                    </div>
+                </div>
+
+                <!-- Stats -->
+                <div class="stats-container">
+                    <h3 class="font-bold mb-2">📊 FUSION STATS</h3>
+                    <div class="text-sm space-y-1">
+                        <div>Memes Created: <span id="memeCount" class="text-yellow-300 font-bold">0</span></div>
+                        <div>Power Level: <span id="powerLevel" class="text-red-300 font-bold">MAXIMUM</span></div>
+                        <div>Fusion Status: <span id="fusionStatus" class="text-green-300 font-bold">COMPLETE</span></div>
+                        <div>Viral Potential: <span id="viralPotential" class="text-purple-300 font-bold">LEGENDARY</span></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Share Section -->
+        <div class="mt-12 text-center">
+            <h2 class="text-3xl font-bold text-white mb-6" style="font-family: 'Bangers', cursive;">SHARE YOUR MASTERPIECE</h2>
+            <div class="flex justify-center space-x-4">
+                <a href="#" class="share-button" data-platform="facebook">
+                    <i class="fab fa-facebook-f"></i>
+                </a>
+                <a href="#" class="share-button" data-platform="twitter">
+                    <i class="fab fa-twitter"></i>
+                </a>
+                <a href="#" class="share-button" data-platform="instagram">
+                    <i class="fab fa-instagram"></i>
+                </a>
+                <a href="#" class="share-button" data-platform="reddit">
+                    <i class="fab fa-reddit-alien"></i>
+                </a>
+                <a href="#" class="share-button" data-platform="tiktok">
+                    <i class="fab fa-tiktok"></i>
+                </a>
+                <a href="#" class="share-button" data-platform="discord">
+                    <i class="fab fa-discord"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <footer class="bg-black/30 backdrop-blur-lg text-white py-6 mt-12">
+        <div class="container mx-auto px-4 text-center">
+            <p class="text-lg">Made with <i class="fas fa-heart text-red-400"></i> by the Fusion Meme Alliance</p>
+            <p class="mt-2 text-sm text-gray-300">
+                Combining the best of both worlds • Cat images by <a href="https://cataas.com/" class="underline text-yellow-300" target="_blank">Cat as a Service</a>
+            </p>
+            <p class="mt-2 text-xs text-gray-400">FUSION CAT MEME DESTROYER 3000 - Where Legends Are Born</p>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialize floating cats
+            createFloatingCats();
+            
+            const canvas = document.getElementById('memeCanvas');
+            const ctx = canvas.getContext('2d');
+            const topTextInput = document.getElementById('topTextInput');
+            const bottomTextInput = document.getElementById('bottomTextInput');
+            const topTextElement = document.getElementById('topText');
+            const bottomTextElement = document.getElementById('bottomText');
+            const textColorSelect = document.getElementById('textColor');
+            const fontSizeSlider = document.getElementById('fontSize');
+            const fontSizeValue = document.getElementById('fontSizeValue');
+            const fontStyleSelect = document.getElementById('fontStyle');
+            const textRotationSlider = document.getElementById('textRotation');
+            const rotationValue = document.getElementById('rotationValue');
+            const textOpacitySlider = document.getElementById('textOpacity');
+            const opacityValue = document.getElementById('opacityValue');
+            const generateMemeBtn = document.getElementById('generateMeme');
+            const randomMemeBtn = document.getElementById('randomMeme');
+            const downloadMemeBtn = document.getElementById('downloadMeme');
+            const surpriseMeBtn = document.getElementById('surpriseMe');
+            const loadCustomCatBtn = document.getElementById('loadCustomCat');
+            const customCatUrl = document.getElementById('customCatUrl');
+            const catOptions = document.querySelectorAll('.cat-option');
+            const templates = document.getElementById('templates');
+            const ideaItems = document.querySelectorAll('.idea-item');
+            const effectBtns = document.querySelectorAll('.effect-btn');
+            const modeToggle = document.getElementById('modeToggle');
+            const shareButtons = document.querySelectorAll('.share-button');
+            const memeCountElement = document.getElementById('memeCount');
+            
+            let currentCatImage = 'https://cataas.com/cat/cute';
+            let selectedCatOption = null;
+            let currentEffect = 'normal';
+            let isAdvancedMode = false;
+            let memeCount = parseInt(localStorage.getItem('fusionMemeCount') || '0');
+            
+            memeCountElement.textContent = memeCount;
+            
+            // Load initial cat image
+            loadCatImage(currentCatImage);
+            
+            // Event listeners
+            topTextInput.addEventListener('input', updateText);
+            bottomTextInput.addEventListener('input', updateText);
+            textColorSelect.addEventListener('change', updateText);
+            fontSizeSlider.addEventListener('input', updateFontSize);
+            fontStyleSelect.addEventListener('change', updateText);
+            textRotationSlider.addEventListener('input', updateRotation);
+            textOpacitySlider.addEventListener('input', updateOpacity);
+            generateMemeBtn.addEventListener('click', generateMeme);
+            randomMemeBtn.addEventListener('click', generateRandomMeme);
+            downloadMemeBtn.addEventListener('click', downloadMeme);
+            surpriseMeBtn.addEventListener('click', surpriseMe);
+            loadCustomCatBtn.addEventListener('click', loadCustomCat);
+            modeToggle.addEventListener('click', toggleMode);
+            
+            // Cat option selection
+            catOptions.forEach(option => {
+                option.addEventListener('click', function() {
+                    if (selectedCatOption) {
+                        selectedCatOption.classList.remove('selected');
+                    }
+                    this.classList.add('selected');
+                    selectedCatOption = this;
+                    currentCatImage = this.getAttribute('data-img');
+                    loadCatImage(currentCatImage);
+                    
+                    // Add wobble effect
+                    this.classList.add('wobble');
+                    setTimeout(() => this.classList.remove('wobble'), 500);
+                });
+            });
+            
+            // Effect selection
+            effectBtns.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    effectBtns.forEach(b => b.classList.remove('active'));
+                    this.classList.add('active');
+                    currentEffect = this.getAttribute('data-effect');
+                    updateText();
+                });
+            });
+            
+            // Template selection
+            templates.addEventListener('click', function(e) {
+                const template = e.target.closest('.meme-template');
+                if (template) {
+                    topTextInput.value = template.getAttribute('data-top');
+                    bottomTextInput.value = template.getAttribute('data-bottom');
+                    updateText();
+                    
+                    template.classList.add('bounce-in');
+                    setTimeout(() => template.classList.remove('bounce-in'), 600);
+                }
+            });
+            
+            // Idea selection
+            ideaItems.forEach(idea => {
+                idea.addEventListener('click', function() {
+                    topTextInput.value = this.getAttribute('data-top');
+                    bottomTextInput.value = this.getAttribute('data-bottom');
+                    updateText();
+                    
+                    this.classList.add('bounce-in');
+                    setTimeout(() => this.classList.remove('bounce-in'), 600);
+                });
+            });
+            
+            // Share buttons
+            shareButtons.forEach(btn => {
+                btn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const platform = this.getAttribute('data-platform');
+                    shareMeme(platform);
+                    
+                    this.classList.add('wobble');
+                    setTimeout(() => this.classList.remove('wobble'), 500);
+                });
+            });
+            
+            // Select first cat option by default
+            if (catOptions.length > 0) {
+                catOptions[0].click();
+            }
+            
+            function createFloatingCats() {
+                const floatingContainer = document.getElementById('floatingCats');
+                const catEmojis = ['🐱', '😸', '😹', '😻', '🙀', '😿', '😾', '🐈', '🐈‍⬛'];
+                
+                for (let i = 0; i < 20; i++) {
+                    const cat = document.createElement('div');
+                    cat.className = 'floating-cat';
+                    cat.textContent = catEmojis[Math.floor(Math.random() * catEmojis.length)];
+                    cat.style.left = Math.random() * 100 + '%';
+                    cat.style.top = Math.random() * 100 + '%';
+                    cat.style.animationDelay = Math.random() * 6 + 's';
+                    cat.style.animationDuration = (Math.random() * 4 + 4) + 's';
+                    floatingContainer.appendChild(cat);
+                }
+            }
+            
+            function loadCatImage(url) {
+                const img = new Image();
+                img.crossOrigin = 'Anonymous';
+                img.onload = function() {
+                    const ratio = Math.min(canvas.width / img.width, canvas.height / img.height);
+                    const width = img.width * ratio;
+                    const height = img.height * ratio;
+                    const x = (canvas.width - width) / 2;
+                    const y = (canvas.height - height) / 2;
+                    
+                    ctx.clearRect(0, 0, canvas.width, canvas.height);
+                    
+                    // Add epic gradient background
+                    const gradient = ctx.createLinearGradient(0, 0, canvas.width, canvas.height);
+                    gradient.addColorStop(0, '#667eea');
+                    gradient.addColorStop(0.5, '#764ba2');
+                    gradient.addColorStop(1, '#ff9a9e');
+                    ctx.fillStyle = gradient;
+                    ctx.fillRect(0, 0, canvas.width, canvas.height);
+                    
+                    ctx.drawImage(img, x, y, width, height);
+                    updateText();
+                };
+                img.onerror = function() {
+                    console.log('Error loading cat image, trying backup...');
+                    if (url !== 'https://cataas.com/cat') {
+                        loadCatImage('https://cataas.com/cat');
+                    }
+                };
+                img.src = url + '?' + Math.random();
+            }
+            
+            function updateText() {
+                const topText = topTextInput.value || 'WHEN THE FUSION';
+                const bottomText = bottomTextInput.value || 'IS COMPLETE';
+                
+                topTextElement.textContent = topText;
+                bottomTextElement.textContent = bottomText;
+                
+                applyTextStyles(topTextElement);
+                applyTextStyles(bottomTextElement);
+            }
+            
+            function applyTextStyles(element) {
+                const fontSize = fontSizeSlider.value;
+                const fontFamily = fontStyleSelect ? fontStyleSelect.value : 'Impact';
+                const color = textColorSelect.value;
+                const rotation = textRotationSlider ? textRotationSlider.value : 0;
+                const opacity = textOpacitySlider ? textOpacitySlider.value / 100 : 1;
+                
+                element.style.fontSize = fontSize + 'px';
+                element.style.fontFamily = fontFamily;
+                element.style.opacity = opacity;
+                element.style.transform = `rotate(${rotation}deg)`;
+                
+                // Reset styles
+                element.style.color = color;
+                element.style.textShadow = '3px 3px 0 #000, -3px -3px 0 #000, 3px -3px 0 #000, -3px 3px 0 #000';
+                element.style.background = 'none';
+                element.style.webkitBackgroundClip = 'unset';
+                element.style.webkitTextFillColor = 'unset';
+                
+                // Apply effects
+                switch(currentEffect) {
+                    case 'rainbow':
+                        element.style.background = 'linear-gradient(45deg, #ff0000, #ff7f00, #ffff00, #00ff00, #0000ff, #4b0082, #9400d3)';
+                        element.style.webkitBackgroundClip = 'text';
+                        element.style.webkitTextFillColor = 'transparent';
+                        element.style.backgroundSize = '200% 200%';
+                        element.style.animation = 'rainbow 2s ease infinite';
+                        break;
+                    case 'fire':
+                        element.style.color = '#ff4500';
+                        element.style.textShadow = '0 0 5px #ff4500, 0 0 10px #ff4500, 0 0 15px #ff4500, 0 0 20px #ff6500, 3px 3px 0 #000, -3px -3px 0 #000, 3px -3px 0 #000, -3px 3px 0 #000';
+                        break;
+                    case 'ice':
+                        element.style.color = '#00bfff';
+                        element.style.textShadow = '0 0 5px #00bfff, 0 0 10px #00bfff, 0 0 15px #00bfff, 0 0 20px #87ceeb, 3px 3px 0 #000, -3px -3px 0 #000, 3px -3px 0 #000, -3px 3px 0 #000';
+                        break;
+                    case 'neon':
+                        element.style.color = '#ff006e';
+                        element.style.textShadow = '0 0 5px #ff006e, 0 0 10px #ff006e, 0 0 15px #ff006e, 0 0 20px #ff006e, 3px 3px 0 #000, -3px -3px 0 #000, 3px -3px 0 #000, -3px 3px 0 #000';
+                        break;
+                    case 'glitch':
+                        element.style.color = '#00ff00';
+                        element.style.textShadow = '2px 0 #ff0000, -2px 0 #00ffff, 3px 3px 0 #000, -3px -3px 0 #000, 3px -3px 0 #000, -3px 3px 0 #000';
+                        break;
+                }
+            }
+            
+            function updateFontSize() {
+                const size = fontSizeSlider.value;
+                fontSizeValue.textContent = size;
+                updateText();
+            }
+            
+            function updateRotation() {
+                if (textRotationSlider && rotationValue) {
+                    const rotation = textRotationSlider.value;
+                    rotationValue.textContent = rotation;
+                    updateText();
+                }
+            }
+            
+            function updateOpacity() {
+                if (textOpacitySlider && opacityValue) {
+                    const opacity = textOpacitySlider.value;
+                    opacityValue.textContent = opacity;
+                    updateText();
+                }
+            }
+            
+            function generateMeme() {
+                incrementMemeCount();
+                generateMemeBtn.classList.add('bounce-in');
+                setTimeout(() => generateMemeBtn.classList.remove('bounce-in'), 600);
+            }
+            
+            function generateRandomMeme() {
+                incrementMemeCount();
+                
+                // Random cat
+                const randomCat = catOptions[Math.floor(Math.random() * catOptions.length)];
+                randomCat.click();
+                
+                // Random text
+                const topTexts = [
+                    "WHEN YOUR HUMAN", "NOBODY:", "CATS AT 3AM:", "THE AUDACITY", "BREAKING NEWS:",
+                    "ME PRETENDING", "THAT MOMENT WHEN", "HUMANS: *EXIST*", "WHEN SOMEONE SAYS",
+                    "POV: YOU'RE A CAT", "CATS BE LIKE:", "MEANWHILE IN", "WAIT, THAT'S", "ONE DOES NOT"
+                ];
+                
+                const bottomTexts = [
+                    "FORGETS THE TREATS", "CATS:", "*ZOOMIES INTENSIFY*", "OF THESE HUMANS", "LOCAL CAT ACHIEVES LEGENDARY STATUS",
+                    "I'M NOT PLOTTING REVENGE", "YOU STEP ON MY TAIL", "CATS: PEACE WAS NEVER AN OPTION", "DOGS ARE BETTER",
+                    "AND THE PETS ARE GOOD", "*JUDGMENTAL STARING*", "CAT DIMENSION", "ILLEGAL", "SIMPLY WALK PAST A CAT"
+                ];
+                
+                topTextInput.value = topTexts[Math.floor(Math.random() * topTexts.length)];
+                bottomTextInput.value = bottomTexts[Math.floor(Math.random() * bottomTexts.length)];
+                
+                // Random effect
+                const effects = ['normal', 'rainbow', 'fire', 'ice', 'neon', 'glitch'];
+                const randomEffect = effects[Math.floor(Math.random() * effects.length)];
+                const effectBtn = document.querySelector(`[data-effect="${randomEffect}"]`);
+                if (effectBtn) effectBtn.click();
+                
+                // Random color
+                const colors = ['white', 'yellow', 'red', 'blue', 'green', 'orange', 'purple'];
+                textColorSelect.value = colors[Math.floor(Math.random() * colors.length)];
+                
+                // Random font size
+                fontSizeSlider.value = Math.floor(Math.random() * 40) + 40;
+                updateFontSize();
+                
+                if (isAdvancedMode) {
+                    // Random rotation
+                    if (textRotationSlider) {
+                        textRotationSlider.value = Math.floor(Math.random() * 21) - 10;
+                        updateRotation();
+                    }
+                    
+                    // Random font
+                    if (fontStyleSelect) {
+                        const fonts = ['Impact', 'Bangers', 'Creepster', 'Arial Black'];
+                        fontStyleSelect.value = fonts[Math.floor(Math.random() * fonts.length)];
+                    }
+                }
+                
+                updateText();
+                
+                randomMemeBtn.classList.add('wobble');
+                setTimeout(() => randomMemeBtn.classList.remove('wobble'), 500);
+            }
+            
+            function surpriseMe() {
+                // Load a completely random cat
+                const surpriseCats = [
+                    'https://cataas.com/cat?width=800&height=600',
+                    'https://cataas.com/cat/cute?width=800&height=600',
+                    'https://cataas.com/cat/funny?width=800&height=600',
+                    'https://cataas.com/cat/angry?width=800&height=600'
+                ];
+                
+                currentCatImage = surpriseCats[Math.floor(Math.random() * surpriseCats.length)];
+                loadCatImage(currentCatImage);
+                
+                // Clear selected cat
+                if (selectedCatOption) {
+                    selectedCatOption.classList.remove('selected');
+                    selectedCatOption = null;
+                }
+                
+                // Random template
+                const templateElements = templates.children;
+                const randomTemplate = templateElements[Math.floor(Math.random() * templateElements.length)];
+                randomTemplate.click();
+                
+                surpriseMeBtn.classList.add('bounce-in');
+                setTimeout(() => surpriseMeBtn.classList.remove('bounce-in'), 600);
+            }
+            
+            function downloadMeme() {
+                const tempCanvas = document.createElement('canvas');
+                tempCanvas.width = canvas.width;
+                tempCanvas.height = canvas.height;
+                const tempCtx = tempCanvas.getContext('2d');
+                
+                const img = new Image();
+                img.crossOrigin = 'Anonymous';
+                img.onload = function() {
+                    // Draw background
+                    const gradient = tempCtx.createLinearGradient(0, 0, tempCanvas.width, tempCanvas.height);
+                    gradient.addColorStop(0, '#667eea');
+                    gradient.addColorStop(0.5, '#764ba2');
+                    gradient.addColorStop(1, '#ff9a9e');
+                    tempCtx.fillStyle = gradient;
+                    tempCtx.fillRect(0, 0, tempCanvas.width, tempCanvas.height);
+                    
+                    // Draw cat
+                    const ratio = Math.min(tempCanvas.width / img.width, tempCanvas.height / img.height);
+                    const width = img.width * ratio;
+                    const height = img.height * ratio;
+                    const x = (tempCanvas.width - width) / 2;
+                    const y = (tempCanvas.height - height) / 2;
+                    
+                    tempCtx.drawImage(img, x, y, width, height);
+                    
+                    // Draw text
+                    const fontSize = parseInt(fontSizeSlider.value);
+                    const fontFamily = fontStyleSelect ? fontStyleSelect.value : 'Impact';
+                    tempCtx.font = `bold ${fontSize}px ${fontFamily}`;
+                    tempCtx.textAlign = 'center';
+                    tempCtx.textBaseline = 'top';
+                    tempCtx.fillStyle = getCanvasTextColor();
+                    tempCtx.strokeStyle = 'black';
+                    tempCtx.lineWidth = Math.max(fontSize / 20, 2);
+                    
+                    const topText = topTextInput.value || 'WHEN THE FUSION';
+                    const bottomText = bottomTextInput.value || 'IS COMPLETE';
+                    
+                    // Top text
+                    tempCtx.strokeText(topText.toUpperCase(), tempCanvas.width / 2, 30);
+                    tempCtx.fillText(topText.toUpperCase(), tempCanvas.width / 2, 30);
+                    
+                    // Bottom text
+                    tempCtx.strokeText(bottomText.toUpperCase(), tempCanvas.width / 2, tempCanvas.height - fontSize - 30);
+                    tempCtx.fillText(bottomText.toUpperCase(), tempCanvas.width / 2, tempCanvas.height - fontSize - 30);
+                    
+                    // Download
+                    const link = document.createElement('a');
+                    link.download = `fusion-cat-meme-${Date.now()}.png`;
+                    link.href = tempCanvas.toDataURL('image/png');
+                    link.click();
+                    
+                    incrementMemeCount();
+                    
+                    downloadMemeBtn.classList.add('bounce-in');
+                    setTimeout(() => downloadMemeBtn.classList.remove('bounce-in'), 600);
+                };
+                img.src = currentCatImage;
+            }
+            
+            function getCanvasTextColor() {
+                switch(currentEffect) {
+                    case 'fire': return '#ff4500';
+                    case 'ice': return '#00bfff';
+                    case 'neon': return '#ff006e';
+                    case 'glitch': return '#00ff00';
+                    default: return textColorSelect.value;
+                }
+            }
+            
+            function loadCustomCat() {
+                const url = customCatUrl.value.trim();
+                if (url) {
+                    currentCatImage = url;
+                    loadCatImage(url);
+                    
+                    if (selectedCatOption) {
+                        selectedCatOption.classList.remove('selected');
+                        selectedCatOption = null;
+                    }
+                    
+                    loadCustomCatBtn.classList.add('wobble');
+                    setTimeout(() => loadCustomCatBtn.classList.remove('wobble'), 500);
+                } else {
+                    alert('Please enter a valid image URL!');
+                }
+            }
+            
+            function toggleMode() {
+                isAdvancedMode = !isAdvancedMode;
+                document.body.classList.toggle('advanced-mode', isAdvancedMode);
+                document.body.classList.toggle('simple-mode', !isAdvancedMode);
+                
+                modeToggle.innerHTML = isAdvancedMode ? 
+                    '<i class="fas fa-cog mr-2"></i>SIMPLE MODE' : 
+                    '<i class="fas fa-cog mr-2"></i>ADVANCED MODE';
+                
+                modeToggle.classList.add('bounce-in');
+                setTimeout(() => modeToggle.classList.remove('bounce-in'), 600);
+            }
+            
+            function shareMeme(platform) {
+                const text = `Check out my legendary cat meme created with FUSION CAT MEME DESTROYER 3000!`;
+                const url = window.location.href;
+                
+                let shareUrl;
+                switch(platform) {
+                    case 'facebook':
+                        shareUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`;
+                        break;
+                    case 'twitter':
+                        shareUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(url)}`;
+                        break;
+                    case 'reddit':
+                        shareUrl = `https://www.reddit.com/submit?url=${encodeURIComponent(url)}&title=${encodeURIComponent(text)}`;
+                        break;
+                    default:
+                        alert(`Share to ${platform} functionality coming soon!`);
+                        return;
+                }
+                
+                if (shareUrl) {
+                    window.open(shareUrl, '_blank', 'width=600,height=400');
+                }
+            }
+            
+            function incrementMemeCount() {
+                memeCount++;
+                memeCountElement.textContent = memeCount;
+                localStorage.setItem('fusionMemeCount', memeCount.toString());
+            }
+            
+            // Initialize in simple mode
+            document.body.classList.add('simple-mode');
+            
+            // Auto-generate initial epic meme
+            setTimeout(() => {
+                topTextInput.value = "WHEN THE FUSION";
+                bottomTextInput.value = "IS COMPLETE";
+                updateText();
+            }, 1000);
+        });
+    </script>
+</body>
+</html>
